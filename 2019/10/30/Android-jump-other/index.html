@@ -23,7 +23,7 @@
 <meta property="og:description" content="1. 问题描述需要实现从我们app跳转到第三方app，并统计第三方app在前台所待时长的功能。 2. 问题分析大概过程如下：1）首先得有权限，我们这个需要实现允许查看应用使用情况、悬浮窗两个权限。2）跳转到第三方app；3）启动一个服务监听；4）弹出一个悬浮窗5）监听第三方app是否在前台运行。实现思路是启动一个定时器，每隔1s去查看前台应用信息。6）预期时间完成，销毁悬浮窗，解绑Service。">
 <meta property="og:locale" content="zh-cn">
 <meta property="og:image" content="http:&#x2F;&#x2F;angokid.com&#x2F;2019&#x2F;10&#x2F;30&#x2F;Android-jump-other&#x2F;app_run.gif">
-<meta property="og:updated_time" content="2019-10-30T15:51:43.671Z">
+<meta property="og:updated_time" content="2019-10-31T13:38:15.117Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;angokid.com&#x2F;2019&#x2F;10&#x2F;30&#x2F;Android-jump-other&#x2F;app_run.gif">
 
@@ -137,14 +137,14 @@
         <span class="column is-narrow">
             
             
-            6 分钟 读完 (约 944 字)
+            6 分钟 读完 (约 945 字)
         </span>
         
     </div>
     <div class="article-entry is-size-6-mobile" itemprop="articleBody">
     
         <h4 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h4><p>需要实现从我们app跳转到第三方app，并统计第三方app在前台所待时长的功能。</p>
-<h4 id="2-问题分析"><a href="#2-问题分析" class="headerlink" title="2. 问题分析"></a>2. 问题分析</h4><p>大概过程如下：<br>1）首先得有权限，我们这个需要实现<strong>允许查看应用使用情况</strong>、<strong>悬浮窗</strong>两个权限。<br>2）跳转到第三方app；<br>3）启动一个服务监听；<br><strong>4）弹出一个悬浮窗</strong><br><strong>5）监听第三方app是否在前台运行。实现思路是启动一个定时器，每隔1s去查看前台应用信息。</strong><br>6）预期时间完成，销毁悬浮窗，解绑Service。</p>
+<h4 id="2-问题分析"><a href="#2-问题分析" class="headerlink" title="2. 问题分析"></a>2. 问题分析</h4><p>大概过程如下：<br>1）首先得有权限，我们这个需要实现<strong>允许查看应用使用情况</strong>、<strong>悬浮窗</strong>两个权限。<br>2）跳转到第三方app；<br>3）启动一个服务监听；<br><strong>4）弹出一个悬浮窗</strong><br><strong>5）监听第三方app是否在前台运行。实现思路是启动一个定时器，每隔1s去查看前台应用信息。</strong><br>6）预期时间完成，销毁悬浮窗，解绑Service。<br> <a id="more"></a></p>
 <h4 id="3-实现过程"><a href="#3-实现过程" class="headerlink" title="3. 实现过程"></a>3. 实现过程</h4><h5 id="3-1-悬浮窗"><a href="#3-1-悬浮窗" class="headerlink" title="3.1 悬浮窗"></a>3.1 悬浮窗</h5><ul>
 <li>悬浮窗权限<br>当我们自己app在后台运行时，无法弹出一个Toast或者Dialog，所以得做一个类似于360安全卫士一样的悬浮窗。所以得要申请悬浮窗权限。6.0之前只需要在AndroidManifest文件中申请：<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;uses-permission android:name=&quot;android.permission.SYSTEM_ALERT_WINDOW&quot;/&gt;</span><br><span class="line">&lt;uses-permission android:name=&quot;android.permission.SYSTEM_OVERLAY_WINDOW&quot;/&gt;</span><br></pre></td></tr></table></figure></li>
 </ul>
@@ -182,7 +182,7 @@
     <div class="columns is-mobile is-multiline article-nav">
         <span class="column is-12-mobile is-half-desktop  article-nav-prev">
             
-            <a href="/2019/10/30/question/">遇到问题</a>
+            <a href="/2019/10/30/question/">Hexo遇到问题</a>
             
         </span>
         <span class="column is-12-mobile is-half-desktop  article-nav-next">
@@ -203,31 +203,6 @@
 </div>
 
 
-
-<div class="comments">
-    <h3 class="title is-4">评论</h3>
-    
-<script>
-    var disqus_config = function () {
-        this.page.url = 'http://angokid.com/2019/10/30/Android-jump-other/';
-        this.page.identifier = '2019/10/30/Android-jump-other/';
-        
-        this.language = 'zh';
-        
-    };
-    (function() {
-        var d = document, s = d.createElement('script');  
-        s.src = '//' + 'Ango' + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-
-<div id="disqus_thread">
-    
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-</div>
 
     </div>
 </section>
