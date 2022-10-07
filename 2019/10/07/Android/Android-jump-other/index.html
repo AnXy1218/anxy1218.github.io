@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>Android跳转到第三方app，运行时长监听 - Ango驿站</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="专属Ango">
+
+
+
+<meta name="keywords" content="Ango,博客">
+
+
+
+    <meta name="description" content="1. 问题描述需要实现从我们app跳转到第三方app，并统计第三方app在前台所待时长的功能。 2. 问题分析大概过程如下：1）首先得有权限，我们这个需要实现允许查看应用使用情况、悬浮窗两个权限。2）跳转到第三方app；3）启动一个服务监听；4）弹出一个悬浮窗5）监听第三方app是否在前台运行。实现思路是启动一个定时器，每隔1s去查看前台应用信息。6）预期时间完成，销毁悬浮窗，解绑Service。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android跳转到第三方app，运行时长监听">
+<meta property="og:url" content="https://anxy1218.github.io/2019/10/07/Android/Android-jump-other/index.html">
+<meta property="og:site_name" content="Ango驿站">
+<meta property="og:description" content="1. 问题描述需要实现从我们app跳转到第三方app，并统计第三方app在前台所待时长的功能。 2. 问题分析大概过程如下：1）首先得有权限，我们这个需要实现允许查看应用使用情况、悬浮窗两个权限。2）跳转到第三方app；3）启动一个服务监听；4）弹出一个悬浮窗5）监听第三方app是否在前台运行。实现思路是启动一个定时器，每隔1s去查看前台应用信息。6）预期时间完成，销毁悬浮窗，解绑Service。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://anxy1218.github.io/2019/10/07/Android/Android-jump-other/app_run.gif">
+<meta property="article:published_time" content="2019-10-06T16:00:27.000Z">
+<meta property="article:modified_time" content="2022-10-06T16:25:46.883Z">
+<meta property="article:author" content="Ango">
+<meta property="article:tag" content="第三方App">
+<meta property="article:tag" content="手机弹窗">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://anxy1218.github.io/2019/10/07/Android/Android-jump-other/app_run.gif">
+
+
+
+
+
+<link rel="icon" href="/logo2.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                <img src="/images/logo2.png" alt="" height="28">
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">归档</a>
+            
+            <a class="navbar-item "
+               href="/categories">分类</a>
+            
+            <a class="navbar-item "
+               href="/about/me">关于</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/AnXy1218">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            Android跳转到第三方app，运行时长监听
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2019-10-06T16:00:27.000Z" itemprop="datePublished">10月 7 2019</time>
+            
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Android/">Android</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            6 分钟 读完 (约 949 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h4 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h4><p>需要实现从我们app跳转到第三方app，并统计第三方app在前台所待时长的功能。</p>
+<h4 id="2-问题分析"><a href="#2-问题分析" class="headerlink" title="2. 问题分析"></a>2. 问题分析</h4><p>大概过程如下：<br>1）首先得有权限，我们这个需要实现<strong>允许查看应用使用情况</strong>、<strong>悬浮窗</strong>两个权限。<br>2）跳转到第三方app；<br>3）启动一个服务监听；<br><strong>4）弹出一个悬浮窗</strong><br><strong>5）监听第三方app是否在前台运行。实现思路是启动一个定时器，每隔1s去查看前台应用信息。</strong><br>6）预期时间完成，销毁悬浮窗，解绑Service。</p>
+<span id="more"></span>
+<h4 id="3-实现过程"><a href="#3-实现过程" class="headerlink" title="3. 实现过程"></a>3. 实现过程</h4><h5 id="3-1-悬浮窗"><a href="#3-1-悬浮窗" class="headerlink" title="3.1 悬浮窗"></a>3.1 悬浮窗</h5><ul>
+<li>悬浮窗权限<br>当我们自己app在后台运行时，无法弹出一个Toast或者Dialog，所以得做一个类似于360安全卫士一样的悬浮窗。所以得要申请悬浮窗权限。6.0之前只需要在AndroidManifest文件中申请：<figure class="highlight routeros hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;uses-permission android:<span class="hljs-attribute">name</span>=<span class="hljs-string">"android.permission.SYSTEM_ALERT_WINDOW"</span>/&gt;</span><br><span class="line">&lt;uses-permission android:<span class="hljs-attribute">name</span>=<span class="hljs-string">"android.permission.SYSTEM_OVERLAY_WINDOW"</span>/&gt;</span><br></pre></td></tr></tbody></table></figure></li>
+</ul>
+<p>6.0之后，代码中动态申请，需要跳转到系统设置中去获取：</p>
+<figure class="highlight reasonml hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M){</span><br><span class="line">    <span class="hljs-keyword">if</span> (!<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Settings</span>.</span></span>can<span class="hljs-constructor">DrawOverlays(MainActivity.<span class="hljs-params">this</span>)</span>){</span><br><span class="line">         Intent intent = <span class="hljs-keyword">new</span> <span class="hljs-constructor">Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.<span class="hljs-params">parse</span>(<span class="hljs-string">"package:"</span> + <span class="hljs-params">getPackageName</span>()</span>));</span><br><span class="line">         start<span class="hljs-constructor">ActivityForResult(<span class="hljs-params">intent</span>, REQUESTCODE_OVER)</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>显示一个悬浮窗<br>显示一个悬浮窗，首先写一个布局文件，然后添加到WindowManager中。<figure class="highlight lasso hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// LayoutInflater.from中Context用getApplicationContext()</span></span><br><span class="line">View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_window,<span class="hljs-built_in">null</span>);</span><br><span class="line">WindowManager mWindowManager = (WindowManager) getApplication().getSystemService(Context.WINDOW_SERVICE);</span><br><span class="line">WindowManager.LayoutParams <span class="hljs-keyword">params</span> = <span class="hljs-literal">new</span> WindowManager.LayoutParams();</span><br><span class="line"><span class="hljs-comment">//设置type.系统提示型窗口，一般都在应用程序窗口之上.</span></span><br><span class="line"><span class="hljs-keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.O){</span><br><span class="line">    <span class="hljs-keyword">params</span>.<span class="hljs-keyword">type</span> = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;</span><br><span class="line">}<span class="hljs-keyword">else</span>{</span><br><span class="line">    <span class="hljs-keyword">params</span>.<span class="hljs-keyword">type</span> = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;</span><br><span class="line">}</span><br><span class="line"><span class="hljs-comment">//设置效果为背景透明.</span></span><br><span class="line"><span class="hljs-keyword">params</span>.format = PixelFormat.RGBA_8888;</span><br><span class="line"><span class="hljs-comment">//设置flags.不可聚焦及不可使用按钮对悬浮窗进行操控.</span></span><br><span class="line"><span class="hljs-keyword">params</span>.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">//设置窗口初始停靠位置.</span></span><br><span class="line"><span class="hljs-keyword">params</span>.gravity = Gravity.LEFT | Gravity.TOP;</span><br><span class="line"><span class="hljs-keyword">params</span>.x = <span class="hljs-number">0</span>;</span><br><span class="line"><span class="hljs-keyword">params</span>.y = <span class="hljs-number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">params</span>.width = WindowManager.LayoutParams.MATCH_PARENT;</span><br><span class="line"><span class="hljs-keyword">params</span>.height = WindowManager.LayoutParams.WRAP_CONTENT;</span><br><span class="line"></span><br><span class="line">mWindowManager.addView(view,<span class="hljs-keyword">params</span>);</span><br></pre></td></tr></tbody></table></figure></li>
+<li><strong>注意：</strong>  在Android 8.0后 params.type变化。具体参考： <a target="_blank" rel="noopener" href="https://blog.csdn.net/mai763727999/article/details/78983375">Android 8.0 悬浮窗变动与用法</a></li>
+</ul>
+<h5 id="3-2-监听app在前台运行"><a href="#3-2-监听app在前台运行" class="headerlink" title="3.2 监听app在前台运行"></a>3.2 监听app在前台运行</h5><p>Android检测app运行在前台，5.0以前是通过获取手机当前活跃进程列表，5.0后这种办法用不了了，5.0以后通过UsageStatsManager（统计服务类）来获取。</p>
+<h6 id="1）5-0之前"><a href="#1）5-0之前" class="headerlink" title="1）5.0之前"></a>1）5.0之前</h6><p>通过ActivityManager获取运行app进程来判断app是否处于前台。</p>
+<figure class="highlight typescript hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-built_in">boolean</span> <span class="title function_">isRunningForeground</span>(<span class="hljs-params">Context context,<span class="hljs-built_in">String</span> packageName</span>){</span><br><span class="line">    <span class="title class_">ActivityManager</span> activityManager = (<span class="title class_">ActivityManager</span>) context.<span class="title function_">getSystemService</span>(<span class="title class_">Context</span>.<span class="hljs-property">ACTIVITY_SERVICE</span>);</span><br><span class="line">    <span class="title class_">List</span>&lt;<span class="title class_">ActivityManager</span>.<span class="hljs-property">RunningAppProcessInfo</span>&gt; processes = activityManager.<span class="title function_">getRunningAppProcesses</span>();</span><br><span class="line">    <span class="hljs-keyword">for</span> (<span class="title class_">ActivityManager</span>.<span class="hljs-property">RunningAppProcessInfo</span> <span class="hljs-attr">processInfo</span>: processes) {</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">if</span> (processInfo.<span class="hljs-property">processName</span>.<span class="title function_">equals</span>(context.<span class="title function_">getPackageName</span>())) {</span><br><span class="line">            <span class="hljs-keyword">if</span> (processInfo.<span class="hljs-property">importance</span> == <span class="title class_">ActivityManager</span>.<span class="hljs-property">RunningAppProcessInfo</span>.<span class="hljs-property">IMPORTANCE_FOREGROUND</span>) {</span><br><span class="line">                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h6 id="2）5-0之后"><a href="#2）5-0之后" class="headerlink" title="2）5.0之后"></a>2）5.0之后</h6><p>Android5.0之后通过UsageStatsManager（统计服务类）</p>
+<ul>
+<li>申请“允许查看应用使用情况”。</li>
+</ul>
+<p>5.0以后查看应用使用情况</p>
+<figure class="highlight routeros hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;uses-permission android:<span class="hljs-attribute">name</span>=<span class="hljs-string">"android.permission.PACKAGE_USAGE_STATS"</span></span><br><span class="line">        tools:<span class="hljs-attribute">ignore</span>=<span class="hljs-string">"ProtectedPermissions"</span>/&gt;</span><br></pre></td></tr></tbody></table></figure>
+<p>在代码中，我们也做一层判断，是否已经获取该权限，如果没有，则跳转到设置权限界面：</p>
+<figure class="highlight fortran hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">Intent</span> <span class="hljs-keyword">intent</span> = new <span class="hljs-keyword">Intent</span>(Settings.ACTION_USAGE_ACCESS_SETTINGS);</span><br><span class="line">startActivityForResult(<span class="hljs-keyword">intent</span>,REQUESTCODE_USAGE);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>获取最近运行app<figure class="highlight reasonml hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">public String get<span class="hljs-constructor">RunningPackageNameOver21(Context <span class="hljs-params">context</span>)</span>{</span><br><span class="line">    String topPackageName = <span class="hljs-string">""</span>;</span><br><span class="line">    <span class="hljs-keyword">if</span> (Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.LOLLIPOP){</span><br><span class="line">        return topPackageName;</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-comment">// 1.获取统计服务类</span></span><br><span class="line">    UsageStatsManager usageStatsManager = (UsageStatsManager) context.get<span class="hljs-constructor">SystemService(Context.USAGE_STATS_SERVICE)</span>;</span><br><span class="line">    long currTime = <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">System</span>.</span></span>current<span class="hljs-constructor">TimeMillis()</span>;</span><br><span class="line">    <span class="hljs-comment">//2.获取从今天0点到现在的使用情况</span></span><br><span class="line">    List&lt;UsageStats&gt; usageStatsList = usageStatsManager.query<span class="hljs-constructor">UsageStats(UsageStatsManager.INTERVAL_DAILY, <span class="hljs-params">getStartTime</span>()</span>,currTime);</span><br><span class="line">    <span class="hljs-comment">//3.根据最后使用时间降序排列</span></span><br><span class="line">    <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Collections</span>.</span></span>sort(usageStatsList,<span class="hljs-keyword">new</span> <span class="hljs-constructor">UsageComparator()</span>);</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">//获取前台应用，排除其他应用因通知栏而产生的统计信息</span></span><br><span class="line">    Field mLastEventField = null;</span><br><span class="line">    <span class="hljs-keyword">try</span> {</span><br><span class="line">        mLastEventField = <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">UsageStats</span>.</span></span><span class="hljs-keyword">class</span>.get<span class="hljs-constructor">Field(<span class="hljs-string">"mLastEvent"</span>)</span>;</span><br><span class="line">    } catch (NoSuchFieldException e) {</span><br><span class="line">        e.print<span class="hljs-constructor">StackTrace()</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">for</span> (UsageStats usageStats:usageStatsList){</span><br><span class="line">        <span class="hljs-keyword">if</span> (mLastEventField != null){</span><br><span class="line">            <span class="hljs-built_in">int</span> lastEvent = <span class="hljs-number">0</span>;</span><br><span class="line">            <span class="hljs-keyword">try</span> {</span><br><span class="line">                lastEvent =  mLastEventField.get<span class="hljs-constructor">Int(<span class="hljs-params">usageStats</span>)</span>;</span><br><span class="line">            } catch (IllegalAccessException e) {</span><br><span class="line">                e.print<span class="hljs-constructor">StackTrace()</span>;</span><br><span class="line">            }</span><br><span class="line"></span><br><span class="line">            <span class="hljs-keyword">if</span> (lastEvent<span class="hljs-operator"> == </span><span class="hljs-number">1</span>){</span><br><span class="line">                topPackageName = usageStats.get<span class="hljs-constructor">PackageName()</span>;</span><br><span class="line"><span class="hljs-comment">//                        Log.i(TAG,"包名:" + usageStats.getPackageName() + ",:" + dateFormat.format(new Date(date)));</span></span><br><span class="line">                return topPackageName;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    return topPackageName;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="4-最后效果"><a href="#4-最后效果" class="headerlink" title="4. 最后效果"></a>4. 最后效果</h4><img src="/2019/10/07/Android/Android-jump-other/app_run.gif" class="" title="运行效果"></li>
+</ul>
+<p>源码：<a target="_blank" rel="noopener" href="https://github.com/AnXy1218/AppRunTime">https://github.com/AnXy1218/AppRunTime</a></p>
+</body></html>
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/%E7%AC%AC%E4%B8%89%E6%96%B9App/">#第三方App</a></span>
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/%E6%89%8B%E6%9C%BA%E5%BC%B9%E7%AA%97/">#手机弹窗</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2019/11/07/java/listDeepCopy/">实现list的深拷贝</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2019/10/06/Android/appRun/">Android跳转到第三方app，运行时长监听</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2022 Ango&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/AnXy1218">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>
