@@ -94,13 +94,13 @@
                href="/categories">分类</a>
             
             <a class="navbar-item "
-               href="/about/me">关于</a>
+               href="/about">关于</a>
             
         </div>
         
         <div class="navbar-menu navbar-end">
             
-            <a class="navbar-item search" title="搜索" href="javascript:;">
+            <a class="navbar-item search" title="Suche" href="javascript:;">
                 <i class="fas fa-search"></i>
             </a>
             
@@ -142,7 +142,7 @@
         <span class="column is-narrow">
             
             
-            2 分钟 读完 (约 259 字)
+            2 分钟 lesen (Über 259 Wörter)
         </span>
         
     </div>
@@ -150,7 +150,7 @@
     
         <html><head></head><body><p>java实现一张透明背景的图片，添加图片水印</p></body></html>
         <p class="article-more-link">
-            <a href="/2019/12/07/java/imgWaterSeal/#more">阅读更多</a>
+            <a href="/2019/12/07/java/imgWaterSeal/#more">mehr</a>
         </p>
     
     </div>
@@ -184,7 +184,7 @@
         <span class="column is-narrow">
             
             
-            5 分钟 读完 (约 679 字)
+            5 分钟 lesen (Über 679 Wörter)
         </span>
         
     </div>
@@ -193,7 +193,7 @@
         <html><head></head><body><h6 id="本文引自：http-blog-sina-com-cn-s-blog-605f78830102uy6x-html"><a href="#本文引自：http-blog-sina-com-cn-s-blog-605f78830102uy6x-html" class="headerlink" title="本文引自：http://blog.sina.com.cn/s/blog_605f78830102uy6x.html"></a>本文引自：<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_605f78830102uy6x.html">http://blog.sina.com.cn/s/blog_605f78830102uy6x.html</a></h6><h5 id="1-先来看一段代码："><a href="#1-先来看一段代码：" class="headerlink" title="1.先来看一段代码："></a>1.先来看一段代码：</h5><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">List&lt;A&gt; source = <span class="hljs-keyword">new</span> <span class="title class_">ArrayList</span>&lt;A&gt;();   </span><br><span class="line">List&lt;A&gt; copy = <span class="hljs-keyword">new</span>  <span class="title class_">ArrayList</span>&lt;A&gt;();</span><br><span class="line"><span class="hljs-type">A</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="title class_">A</span>();        </span><br><span class="line">a.setName(<span class="hljs-string">"ABC“);</span></span><br><span class="line"><span class="hljs-string">source.add(a);</span></span><br><span class="line"><span class="hljs-string">copy.addAll(source);     //通过addAll()方法拷贝</span></span><br><span class="line"><span class="hljs-string">copy.get(0).setName("</span>CDE<span class="hljs-string">");</span></span><br></pre></td></tr></tbody></table></figure>
 <p>这时，获取source.get(0)的name值，也变成了“CDE”。<br>为了解决这个问题，使得改变copy中的值，不影响source中的数据，则要进行深拷贝。<br>即，对A类实现clone()方法：</p></body></html>
         <p class="article-more-link">
-            <a href="/2019/11/07/java/listDeepCopy/#more">阅读更多</a>
+            <a href="/2019/11/07/java/listDeepCopy/#more">mehr</a>
         </p>
     
     </div>
@@ -227,7 +227,7 @@
         <span class="column is-narrow">
             
             
-            6 分钟 读完 (约 949 字)
+            6 分钟 lesen (Über 949 Wörter)
         </span>
         
     </div>
@@ -236,7 +236,7 @@
         <html><head></head><body><h4 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h4><p>需要实现从我们app跳转到第三方app，并统计第三方app在前台所待时长的功能。</p>
 <h4 id="2-问题分析"><a href="#2-问题分析" class="headerlink" title="2. 问题分析"></a>2. 问题分析</h4><p>大概过程如下：<br>1）首先得有权限，我们这个需要实现<strong>允许查看应用使用情况</strong>、<strong>悬浮窗</strong>两个权限。<br>2）跳转到第三方app；<br>3）启动一个服务监听；<br><strong>4）弹出一个悬浮窗</strong><br><strong>5）监听第三方app是否在前台运行。实现思路是启动一个定时器，每隔1s去查看前台应用信息。</strong><br>6）预期时间完成，销毁悬浮窗，解绑Service。</p></body></html>
         <p class="article-more-link">
-            <a href="/2019/10/07/Android/Android-jump-other/#more">阅读更多</a>
+            <a href="/2019/10/07/Android/Android-jump-other/#more">mehr</a>
         </p>
     
     </div>
@@ -270,7 +270,7 @@
         <span class="column is-narrow">
             
             
-            6 分钟 读完 (约 868 字)
+            6 分钟 lesen (Über 868 Wörter)
         </span>
         
     </div>
@@ -279,8 +279,51 @@
         <html><head></head><body><h5 id="最近在做项目的时候，有这样一个需求，要实现取件码的输入，效果图如下："><a href="#最近在做项目的时候，有这样一个需求，要实现取件码的输入，效果图如下：" class="headerlink" title="最近在做项目的时候，有这样一个需求，要实现取件码的输入，效果图如下："></a>最近在做项目的时候，有这样一个需求，要实现取件码的输入，效果图如下：</h5><!-- ![实现效果](input_target.webp) -->
 <img src="/2019/10/06/Android/appRun/input_target.webp" class="" title="实现效果"></body></html>
         <p class="article-more-link">
-            <a href="/2019/10/06/Android/appRun/#more">阅读更多</a>
+            <a href="/2019/10/06/Android/appRun/#more">mehr</a>
         </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2019/09/07/hexo/common/" itemprop="url">Hexo使用总结</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2019-09-07T15:02:22.000Z" itemprop="datePublished">9月 7 2019</time>
+            
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/hexo/">hexo</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            几秒 lesen (Über 54 Wörter)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h3 id="1-创建新页面"><a href="#1-创建新页面" class="headerlink" title="1.创建新页面"></a>1.创建新页面</h3><figure class="highlight css hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page <span class="hljs-attr">--path</span> <span class="hljs-selector-tag">a</span>\<span class="hljs-selector-tag">b</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="2-不同的主题设置不同的Website"><a href="#2-不同的主题设置不同的Website" class="headerlink" title="2.不同的主题设置不同的Website"></a>2.不同的主题设置不同的Website</h3><p>可以在用不同的yml，编译的时候，用不同theme的yml代替_config.yml编译</p>
+<figure class="highlight ada hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s <span class="hljs-comment">--config xxx.yml</span></span><br></pre></td></tr></tbody></table></figure>
+</body></html>
     
     </div>
     
@@ -313,7 +356,7 @@
         <span class="column is-narrow">
             
             
-            1 分钟 读完 (约 124 字)
+            1 分钟 lesen (Über 124 Wörter)
         </span>
         
     </div>
@@ -321,7 +364,7 @@
     
         <html><head></head><body><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p></body></html>
         <p class="article-more-link">
-            <a href="/2019/09/06/hello-world/#more">阅读更多</a>
+            <a href="/2019/09/06/hello-world/#more">mehr</a>
         </p>
     
     </div>
@@ -516,7 +559,7 @@
     <div class="searchbox-mask"></div>
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Suche etwas..." />
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -528,11 +571,11 @@
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
+                POSTS: 'Posts',
+                PAGES: 'Seiten',
+                CATEGORIES: 'Kategorien',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
             },
             CONTENT_URL: '/content.json',
         };
